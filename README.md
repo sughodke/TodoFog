@@ -1,4 +1,8 @@
 TodoFog
 =======
 
-Fork of Backbone Todo, except that this one uses MongoDB as a backend
+By using MongoLab's [REST APIs](https://support.mongolab.com/entries/20433053-REST-API-for-MongoDB), we don't have to write any backend code to get something like this.
+
+
+
+![Screen Capture](http://i.imgur.com/DCHEbHR.png)
