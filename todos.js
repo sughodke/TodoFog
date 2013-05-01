@@ -1,7 +1,13 @@
 // An example Backbone application contributed by
-// [Jérôme Gravel-Niquet](http://jgn.me/). This demo uses a simple
-// [LocalStorage adapter](backbone-localstorage.html)
-// to persist Backbone models within your browser.
+// [Jérôme Gravel-Niquet](http://jgn.me/). This demo used to use  
+// HTML5 LocalStorage, it has been modified to use just the 
+// provided REST APIs provided by MongoLab
+//
+// Enhanced by Sid Ghodke
+
+//Click `Open API View` and enter your collection and API key as mentioned
+var MongoLabKey = '?apiKey=6gRJdSZVyo-XI1yoR2gBsILEQ4Wj5lrf';
+var MongoLabCollectionURL = 'https://api.mongolab.com/api/1/databases/melt/collections/melt.todos';
 
 // Load the application once the DOM is ready, using `jQuery.ready`:
 $(function(){
@@ -21,18 +27,29 @@ $(function(){
       };
     },
 
-    // Ensure that each todo created has `title`.
+    // Ensure that each todo created has `title` and
+    // Finish setting up the URL for this Model.
     initialize: function() {
+      if (!this.get("_id")) {
+        this.isNew(true);
+      } else {
+        this.set({"id": this.get("_id")["$oid"]});
+        this.url += this.id;
+      }
+
       if (!this.get("title")) {
         this.set({"title": this.defaults().title});
       }
+      this.url +=  MongoLabKey;
     },
 
     // Toggle the `done` state of this todo item.
     toggle: function() {
       this.save({done: !this.get("done")});
-    }
-
+    },
+   
+    // Put down the URL root only, we let init() finish 
+    url: MongoLabCollectionURL + '/'
   });
 
   // Todo Collection
@@ -46,7 +63,27 @@ $(function(){
     model: Todo,
 
     // Save all of the todo items under the `"todos-backbone"` namespace.
-    localStorage: new Backbone.LocalStorage("todos-backbone"),
+    //localStorage: new Backbone.LocalStorage("todos-backbone"),
+
+    // Read from MongoDB
+    //url: 'http://127.0.0.1:28017/local/todo/',
+    /*
+    parse: function(response){
+       return response['rows'];
+    },
+    */
+    //url: 'https://api.mongolab.com/api/1/databases/melt/collections/melt.todos' + MongoLabKey,
+    url: MongoLabCollectionURL + MongoLabKey,
+
+
+    // Read from Riak
+    /*
+    url: 'http://127.0.0.1:8098/riak/todo',
+
+    parse: function(response){
+       return response['keys'];
+    },
+     */
 
     // Filter down the list of all todo items that are finished.
     done: function() {
