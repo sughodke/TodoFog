@@ -1,5 +1,25 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  #todoapp
+    header
+    h1 Welcome to Todos
+
+    if locals.user
+      p Hello #{user.displayName}
+      a(href='/todos') Come on in!
+    else 
+      h3 Hello, how are you?  
+      p Busy, eh?  Lets try to change that.
+      p Could you please let us know more about you?  Please login with Facebook and we will be with you shortly.
+
+    if locals.user
+      a(href='/logout') Log Out?
+    else
+      a(href='/auth/facebook')
+        img(src='/images/login-with-facebook.png') Login with Facebook?
+      //img(src='http://twitterfall.com/twitterlogin.png')
+      br
+
+    p
+      em We respect your privacy and keep your data yours.

@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  #todoapp
+    header
+      if locals.user
+        #settings
+          a(href='/logout') logout
+      h1 My Todos
+      input#new-todo(type='text',placeholder='What needs to be done?')
+    section#main
+      input#toggle-all(type='checkbox')
+      label(for='toggle-all') Mark all as complete
+      ul#todo-list
+    footer
+      a#clear-completed Clear completed
+      #todo-count
+  #instructions Double-click to edit a todo.
+  #credits Created by 
+    a(href="http://jgn.me/") Jérôme Gravel-Niquet
+    p Enhanced by 
+      a(href="notyouraverageblogger.blogspot.com") Sid Ghodke
+    p Powered by MongoDB
+    br
+  </div>
+
+  script
+    var jlocals = !{JSON.stringify(user)};
+
+  script(src="javascripts/contrib/jquery.js")
+  script(src="javascripts/contrib/underscore.js")
+  script(src="javascripts/contrib/backbone.js")
+  script(src="javascripts/todos.js")
+
+  script(type="text/template",id="item-template")
+    <div class="view">
+    <input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+    <label><%- title %></label>
+    <a class="destroy"></a>
+    </div>
+    <input class="edit" type="text" value="<%- title %>" />
+ 
+  script(type="text/template",id="stats-template")
+    <% if (done) { %>
+    <a id="clear-completed">Clear <%= done %> completed <%= done == 1 ? 'item' : 'items' %></a>
+    <% } %>
+    <div class="todo-count"><b><%= remaining %></b> <%= remaining == 1 ? 'item' : 'items' %> left</div>
+  

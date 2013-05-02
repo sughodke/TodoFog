@@ -7,7 +7,7 @@
 
 //Click `Open API View` and enter your collection and API key as mentioned
 var MongoLabKey = '?apiKey=6gRJdSZVyo-XI1yoR2gBsILEQ4Wj5lrf';
-var MongoLabCollectionURL = 'https://api.mongolab.com/api/1/databases/melt/collections/melt.todos';
+var MongoLabCollectionURL = 'https://api.mongolab.com/api/1/databases/melt/collections/todos';
 
 // Load the application once the DOM is ready, using `jQuery.ready`:
 $(function(){
@@ -40,6 +40,8 @@ $(function(){
       if (!this.get("title")) {
         this.set({"title": this.defaults().title});
       }
+
+      this.set({"fbid": jlocals.id});
       this.url +=  MongoLabKey;
     },
 
@@ -73,7 +75,7 @@ $(function(){
     },
     */
     //url: 'https://api.mongolab.com/api/1/databases/melt/collections/melt.todos' + MongoLabKey,
-    url: MongoLabCollectionURL + MongoLabKey,
+    url: MongoLabCollectionURL + MongoLabKey + "&q={'fbid':'" + jlocals.id +"'}",
 
 
     // Read from Riak
